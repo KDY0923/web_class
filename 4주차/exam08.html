@@ -10,8 +10,13 @@
     p { background-color: yellow; } /* 태그 선택자 */
     .c1 { border: 1px solid red; } /* 클래스 선택자 */
     #n1 { background-color: aqua; } /* id 선택자 */
-    ul li { color : brown; }
-    ol > li { color : chartreuse; }
+    ul li { color : brown; } /* 하위 선택자 */
+    ol > li { color : chartreuse; } /* 자식 선택자 */
+    /* 링크 가상 클래스 */
+    a:link { color : black; text-decoration: none; }
+    a:visited { color : black; }
+    a:hover { color : cyan; }
+    a:active { background-color : darkgray; }
 </style>
 <body>
     <h1 style="color:red">CSS 스타일</h1>
@@ -28,5 +33,6 @@
         <li>CSS</li>
         <li>JS</li>
     </ol>
+    <a href="http:///syu.ac.kr">삼육대학교</a>
 </body>
 </html>
