@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 시간표</title>
 </head>
+<style>
+    .major {color:midnightblue;}
+    .liberal_arts {color:purple;}
+    .Chapel {color:brown;}
+    .day {background-color: lightyellow;}
+
+</style>
 <body>
     <h1>내 시간표</h1>
     <h5>2025100814 김도윤</h5>
-    <table border="3">
+    <table border="3";>
         <thead>
-            <tr>
+            <tr style="background-color: palegreen;">
                 <th><b>시간/요일</b></th>
                 <th><b>월</b></th>
                 <th><b>화</b></th>
@@ -19,72 +26,72 @@
                 <th><b>금</b></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="background-color:lemonchiffon;">
             <tr>
-                <td><b>1교시<br>(9:00~10:00)</b></td>
+                <td class="day";><b>1교시<br>(9:00~10:00)</b></td>
                 <td></td>
-                <td rowspan="3">웹프로그래밍<br>(바울관 303호)</td>
+                <td rowspan="3"; class="major"; style="background-color:khaki;">웹프로그래밍<br>(바울관 303호)</td>
                 <td></td>
-                <td rowspan="3">웹프로그래밍<br>(바울관 303호)</td>
+                <td rowspan="3"; class="major"; style="background-color:cornflowerblue;">데이터 베이스 설계<br>(바울관 303호)</td>
                 <td></td>
             </tr>
             <tr>
-                <td><b>2교시<br>(10:00~11:00)</b></td>
+                <td class="day"<b>2교시<br>(10:00~11:00)</b></td>
                 <td></td>
-                <td rowspan="2">역사와 문화<br>(사무엘관 110호)</td>
-                <td rowspan="2">조직행동론<br>(바울관 312호)</td>
+                <td rowspan="2"; class="liberal_arts"; style="background-color:coral;">역사와 문화<br>(사무엘관 110호)</td>
+                <td rowspan="2"; class="major"; style="background-color:darkturquoise;">조직행동론<br>(바울관 312호)</td>
             </tr>
             <tr>
-                <td><b>3교시<br>(11:00~12:00)</b></td>
-                <td>채플<br>(대강당)</td>
+                <td class="day"><b>3교시<br>(11:00~12:00)</b></td>
+                <td class="Chapel"; style="background-color:darkturquoise;">채플<br>(대강당)</td>
             </tr>
             <tr>
-                <td><b>4교시<br>(12:00~13:00)</b></td>
+                <td class="day"><b>4교시<br>(12:00~13:00)</b></td>
                 <td></td>
-                <td rowspan="3">대학수학<br>(제2과학관 106호)</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><b>5교시<br>(13:00~14:00)</b></td>
-                <td></td>
+                <td rowspan="3"; class="liberal_arts"; style="background-color:lightcoral;">대학수학<br>(제2과학관 106호)</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><b>6교시<br>(14:00~15:00)</b></td>
+                <td class="day"><b>5교시<br>(13:00~14:00)</b></td>
                 <td></td>
-                <td rowspan="3">경제학원론<br>(바울관 312호)</td>
-                <td rowspan="3">AI반도체공정<br>(제1실습관 202호)</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><b>7교시<br>(15:00~16:00)</b></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><b>8교시<br>(16:00~17:00)</b></td>
+                <td class="day"><b>6교시<br>(14:00~15:00)</b></td>
+                <td></td>
+                <td rowspan="3"; class="major"; style="background-color:chartreuse;">경제학원론<br>(바울관 312호)</td>
+                <td rowspan="3"; class="major"; style="background-color:mediumpurple;">AI반도체공정<br>(제1실습관 202호)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="day"><b>7교시<br>(15:00~16:00)</b></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td><b>9교시<br>(17:00~18:00)</b></td>
+                <td class="day"><b>8교시<br>(16:00~17:00)</b></td>
                 <td></td>
-                <td>인생설계와 진로 II<br>(바울관 203호)</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="day"><b>9교시<br>(17:00~18:00)</b></td>
+                <td></td>
+                <td class="liberal_arts"; style="background-color:rosybrown;">인생설계와 진로 II<br>(바울관 203호)</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
         </tbody>
-        <tfoot>
+        <tfoot style="background-color:lemonchiffon;">
             <tr>
-                <td><b>온라인 수업</b></td>
-                <td colspan="5">이번학기 X</td>
+                <td class="day"><b>온라인 수업</b></td>
+                <td colspan="5";>이번학기 X</td>
             </tr>
         </tfoot>
     </table>
