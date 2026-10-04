@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="kr">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +12,19 @@
     .major {color:midnightblue;}
     .liberal_arts {color:purple;}
     .Chapel {color:brown;}
-    .day {background-color: lightyellow;}
+    .font {
+  font-family: "Jua", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 </style>
-<body>
+<body class="font">
     <h1>내 시간표</h1>
     <h5>2025100814 김도윤</h5>
     <table border="3";>
-        <thead>
-            <tr style="background-color: palegreen;">
+        <thead style="text-align: center;">
+            <tr>
                 <th><b>시간/요일</b></th>
                 <th><b>월</b></th>
                 <th><b>화</b></th>
@@ -26,7 +33,7 @@
                 <th><b>금</b></th>
             </tr>
         </thead>
-        <tbody style="background-color:lemonchiffon;">
+        <tbody style="text-align: center;">
             <tr>
                 <td class="day";><b>1교시<br>(9:00~10:00)</b></td>
                 <td></td>
@@ -36,7 +43,7 @@
                 <td></td>
             </tr>
             <tr>
-                <td class="day"<b>2교시<br>(10:00~11:00)</b></td>
+                <td class="day"><b>2교시<br>(10:00~11:00)</b></td>
                 <td></td>
                 <td rowspan="2"; class="liberal_arts"; style="background-color:coral;">역사와 문화<br>(사무엘관 110호)</td>
                 <td rowspan="2"; class="major"; style="background-color:darkturquoise;">조직행동론<br>(바울관 312호)</td>
@@ -88,7 +95,7 @@
                 <td></td>
             </tr>
         </tbody>
-        <tfoot style="background-color:lemonchiffon;">
+        <tfoot style="text-align: center;">
             <tr>
                 <td class="day"><b>온라인 수업</b></td>
                 <td colspan="5";>이번학기 X</td>
