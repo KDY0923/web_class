@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조건문(switch_case)</title>
+</head>
+<script>
+    let number = prompt("점수를 입력하세요");
+    switch (true) {
+        case number >= 90:
+            alert("A");
+            break;
+        case number >= 80:
+            alert("B");
+            break;
+        case number >= 70:
+            alert("C");
+            break;
+        case number >= 60:
+            alert("D");
+            break;
+        default:
+            alert("F");
+    }
+</script>
+<body>
+    <h1>성적 계산(switch ~ case문)</h1>
+</body>
+</html>
+
+<!-- 
+교수님 코드(예시 1, 예시 2는 제 코드와 겹칩니다.)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    let number = prompt("점수를 입력하세요");
+    switch(parseInt(number / 10)){
+        case 10:
+        case 9:
+            alert("A학점");
+            break;
+        case 8:
+            alert("B학점");
+            break;
+        case 7:
+            alert("C학점");
+            break;
+        case 6:
+            alert("D학점");
+            break;
+        default:
+            alert("F학점");
+    }
+</script>
+<body>
+    <h1>성적 계산(switch ~ case문)</h1>
+</body>
+</html>
+-->
