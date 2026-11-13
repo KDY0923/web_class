@@ -52,12 +52,44 @@
         $('.op').click(function () {
             let cur = $('#disp2').val();
             let opt = $(this).val();
+            let total;
             if (opt != "=") {
                 $('#disp2').val(cur + opt);
             } else {
                 $('#disp1').val(cur);
                 // $('#disp2').val(eval(cur));
+                const cal_processing = cur.trim(); //불필요한 빈칸 전처리(혹여나 split을 썼을때 ++ 넣으면 빈칸 발생)
+                const cal_split = cal_processing.split(/([+\-*/])/).filter(token => token !== ""); //split을 이용해 각 기호에 따라 나눠 저장하도록 설정 + 중간 빈칸 처
+                const split_length = cal_split.length //나뉘어진 split배열의 크기
+                const operators = ["+", "-", "*", "/", "(", ")"]; //구분자(조절하기 위해 선언)
 
+                for (i = 0; i < split_length; i++) {
+                    if (i === 0 && operators.includes(cal_split[i])) {
+                        continue;
+                    }
+                    if (operators.includes(cal_split[i])) { //기호일때 연산하도록 수행
+                        // 문자열 -> 숫자로 변환
+                        const left = Number(cal_split[i - 1]);
+                        const right = Number(cal_split[i + 1]);
+
+                        switch (cal_split[i]) {
+                            case '+':
+                                total = left + right;
+                                break;
+                            case '-':
+                                total = left - right;
+                                break;
+                            case '*':
+                                total = left * right;
+                                break;
+                            case '/':
+                                total = left / right;
+                                break;
+                        }
+                    }
+                }
+                $('#disp2').val(total);
+                cur = total.toString(); //최종 결과값의 오류가 나지 않게 하기위해 cur값에 재저장.
             }
         });
     });
