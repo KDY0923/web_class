@@ -1,40 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <style>
-    h1 { text-align: center;}
-    .disp { width: 225px; height: 40px; margin: 3px;}
-    .disp {font-family: "Oxanium", sans-serif; font-size: 22pt; text-align: right;}
-    input[type=button] { width: 50px; height: 50px; text-align: center;
-    vertical-align: middle; margin: 5px; font-size: 16px; }
-    #calc { width: 240px; margin-left: auto; margin-right: auto; font-size: 0px;}
+    h1 {
+        text-align: center;
+    }
+
+    .disp {
+        width: 225px;
+        height: 40px;
+        margin: 3px;
+    }
+
+    .disp {
+        font-family: "Oxanium", sans-serif;
+        font-size: 22pt;
+        text-align: right;
+    }
+
+    input[type=button] {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        vertical-align: middle;
+        margin: 5px;
+        font-size: 16px;
+    }
+
+    #calc {
+        width: 240px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0px;
+    }
 </style>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
-    $(document).ready(function(){
-        $('.num').click(function(){
+    $(document).ready(function () {
+        $('.num').click(function () {
             let cur = $('#disp2').val();
             let n = $(this).val();
-            $('#disp2').val(cur+n);
+            $('#disp2').val(cur + n);
         });
 
-        $('.op').click(function(){
+        $('.op').click(function () {
             let cur = $('#disp2').val();
             let opt = $(this).val();
-            if(opt != "="){
-                $('#disp2').val(cur+opt);
-            }else{
+            if (opt != "=") {
+                $('#disp2').val(cur + opt);
+            } else {
                 $('#disp1').val(cur);
-                // $('#disp2').val(eval(cur));
-                
+                $('#disp2').val(eval(cur));
+
             }
         });
     });
 </script>
+
 <body>
     <h1>계산기</h1>
     <div id="calc">
@@ -60,4 +88,5 @@
         <input type="button" class="op" value="=">
     </div>
 </body>
+
 </html>
