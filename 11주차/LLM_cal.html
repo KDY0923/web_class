@@ -1,0 +1,1147 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Calculator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #000000;
+    color: white;
+    font-family: "Segoe UI", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.calculator {
+    width: 370px;
+    max-width: 100%;
+    padding: 20px;
+    background: #292929;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.header button {
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+/* 디스플레이 */
+
+.display {
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: right;
+    overflow: hidden;
+}
+
+.expression {
+    height: 30px;
+    font-size: 17px;
+    color: #aaa;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.result {
+    min-height: 65px;
+    font-size: 40px;
+    font-weight: 600;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* 공통 버튼 */
+
+button {
+    border: none;
+    border-radius: 5px;
+    background: #3b3b3b;
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+button:hover {
+    background: #505050;
+}
+
+button:active {
+    background: #666;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.button-grid button {
+    height: 60px;
+    font-size: 21px;
+}
+
+.function {
+    background: #323232;
+    font-size: 17px !important;
+}
+
+.operator {
+    background: #323232;
+}
+
+.equals {
+    background: #66FFFF;
+    color: #000000;
+    font-weight: bold;
+}
+
+.equals:hover {
+    background: #85FFFF;
+}
+
+.equals:active {
+    background: #33CCCC;
+}
+
+/* 상단 메뉴 버튼 */
+
+.menu-button {
+    background: #414141;
+    font-size: 14px;
+}
+
+/* 초월함수 패널 */
+
+.scientific-panel {
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #222;
+    border-radius: 7px;
+}
+
+.scientific-panel.active {
+    display: grid;
+}
+
+.scientific-panel button {
+    height: 48px;
+    font-size: 17px;
+    background: #454545;
+}
+
+.scientific-panel button:hover {
+    background: #626262;
+}
+
+/* 계산 이력 */
+
+.history-panel {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    background: #222;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.history-panel.active {
+    display: block;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.history-header h3 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.history-header button {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.history-item {
+    width: 100%;
+    text-align: right;
+    padding: 10px;
+    margin-bottom: 6px;
+    background: #353535;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.history-item:hover {
+    background: #505050;
+}
+
+.history-expression {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.history-result {
+    font-size: 19px;
+}
+
+.empty-history {
+    color: #888;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+}
+
+/* 키보드 안내 */
+
+.keyboard-guide {
+    margin-top: 15px;
+    color: #888;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+@media (max-width: 400px) {
+    .calculator {
+        padding: 14px;
+    }
+
+    .button-grid button {
+        height: 55px;
+    }
+
+    .result {
+        font-size: 34px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+
+    <!-- 상단 메뉴 -->
+    <div class="header">
+        <h2>Calculator</h2>
+
+        <div>
+            <button class="menu-button" id="scientificToggle">
+                초월
+            </button>
+
+            <button class="menu-button" id="historyToggle">
+                이력
+            </button>
+        </div>
+    </div>
+
+    <!-- 입력 / 출력 디스플레이 -->
+    <div class="display">
+
+        <div class="expression" id="expression"></div>
+
+        <div class="result" id="result">0</div>
+
+    </div>
+
+    <!-- 초월함수 패널 -->
+    <div class="scientific-panel" id="scientificPanel">
+
+        <button data-scientific="percent">%</button>
+        <button data-scientific="sqrt">√</button>
+        <button data-scientific="square">x²</button>
+        <button data-operator="^">xʸ</button>
+
+    </div>
+
+    <!-- 계산 버튼 -->
+    <div class="button-grid">
+
+        <button class="function" data-action="clear-entry">CE</button>
+        <button class="function" data-action="clear">C</button>
+        <button class="function" data-action="backspace">⌫</button>
+        <button class="operator" data-operator="/">÷</button>
+
+        <button data-number="7">7</button>
+        <button data-number="8">8</button>
+        <button data-number="9">9</button>
+        <button class="operator" data-operator="*">×</button>
+
+        <button data-number="4">4</button>
+        <button data-number="5">5</button>
+        <button data-number="6">6</button>
+        <button class="operator" data-operator="-">−</button>
+
+        <button data-number="1">1</button>
+        <button data-number="2">2</button>
+        <button data-number="3">3</button>
+        <button class="operator" data-operator="+">+</button>
+
+        <button class="function" data-action="sign">±</button>
+        <button data-number="0">0</button>
+        <button data-action="decimal">.</button>
+        <button class="equals" data-action="equals">=</button>
+
+    </div>
+
+    <!-- 계산 이력 패널 -->
+    <div class="history-panel" id="historyPanel">
+
+        <div class="history-header">
+            <h3>계산 이력</h3>
+            <button class="menu-button" id="clearHistory">
+                전체 삭제
+            </button>
+        </div>
+
+        <div id="historyList">
+            <div class="empty-history">
+                계산 이력이 없습니다.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="keyboard-guide">
+        키보드: 숫자 / + - * / / Enter / Backspace / Esc<br>
+        초월 기능: % / r(√) / s(x²) / ^(xʸ)
+    </div>
+
+</div>
+
+
+<script>
+
+// ========================================
+// 1. 기본 변수
+// ========================================
+
+const expressionDisplay = document.getElementById("expression");
+const resultDisplay = document.getElementById("result");
+
+const scientificPanel =
+    document.getElementById("scientificPanel");
+
+const historyPanel =
+    document.getElementById("historyPanel");
+
+const historyList =
+    document.getElementById("historyList");
+
+let displayValue = "0";
+
+let firstOperand = null;
+let operator = null;
+
+let waitingForSecondOperand = false;
+let justCalculated = false;
+
+let expression = "";
+
+// 계산 이력
+let calculationHistory = [];
+
+
+// 연산자 기호
+const operatorSymbols = {
+    "+": "+",
+    "-": "−",
+    "*": "×",
+    "/": "÷",
+    "^": "^"
+};
+
+
+// ========================================
+// 2. 화면 출력
+// ========================================
+
+function render() {
+
+    expressionDisplay.textContent = expression;
+    resultDisplay.textContent = displayValue;
+
+}
+
+
+// 숫자 표시 형식
+function formatNumber(number) {
+
+    return Number(number).toLocaleString("en-US", {
+        maximumFractionDigits: 10
+    });
+
+}
+
+
+// ========================================
+// 3. 숫자 입력
+// ========================================
+
+function inputDigit(digit) {
+
+    if (displayValue === "오류") {
+        clearAll();
+    }
+
+    if (waitingForSecondOperand || justCalculated) {
+
+        if (justCalculated) {
+            firstOperand = null;
+            operator = null;
+            expression = "";
+        }
+
+        displayValue = digit;
+
+        waitingForSecondOperand = false;
+        justCalculated = false;
+
+    } else {
+
+        if (displayValue === "0") {
+            displayValue = digit;
+        }
+
+        else if (displayValue.replace("-", "").length < 16) {
+            displayValue += digit;
+        }
+
+    }
+
+    renderExpression();
+}
+
+
+// ========================================
+// 4. 소수점 입력
+// ========================================
+
+function inputDecimal() {
+
+    if (displayValue === "오류") {
+        clearAll();
+    }
+
+    if (waitingForSecondOperand || justCalculated) {
+
+        if (justCalculated) {
+            firstOperand = null;
+            operator = null;
+            expression = "";
+        }
+
+        displayValue = "0.";
+
+        waitingForSecondOperand = false;
+        justCalculated = false;
+
+    }
+
+    else if (!displayValue.includes(".")) {
+        displayValue += ".";
+    }
+
+    renderExpression();
+}
+
+
+// ========================================
+// 5. 계산식 표시
+// ========================================
+
+function renderExpression() {
+
+    if (operator !== null) {
+
+        const left = formatNumber(firstOperand);
+        const symbol = operatorSymbols[operator];
+
+        if (waitingForSecondOperand) {
+            expression = `${left} ${symbol}`;
+        }
+
+        else {
+            expression =
+                `${left} ${symbol} ${displayValue}`;
+        }
+
+    }
+
+    else if (!justCalculated) {
+        expression = "";
+    }
+
+    render();
+}
+
+
+// ========================================
+// 6. 사칙연산 및 거듭제곱
+// ========================================
+
+function calculate(a, b, op) {
+
+    let value;
+
+    switch (op) {
+
+        case "+":
+            value = a + b;
+            break;
+
+        case "-":
+            value = a - b;
+            break;
+
+        case "*":
+            value = a * b;
+            break;
+
+        case "/":
+
+            if (b === 0) return null;
+
+            value = a / b;
+            break;
+
+        case "^":
+            value = Math.pow(a, b);
+            break;
+
+        default:
+            return null;
+
+    }
+
+    if (!Number.isFinite(value)) {
+        return null;
+    }
+
+    return Number(value.toPrecision(12));
+
+}
+
+
+// ========================================
+// 7. 연산자 선택
+// ========================================
+
+function chooseOperator(nextOperator) {
+
+    if (displayValue === "오류") {
+        clearAll();
+    }
+
+    const inputValue = Number(displayValue);
+
+    if (operator !== null && !waitingForSecondOperand) {
+
+        const result = calculate(
+            firstOperand,
+            inputValue,
+            operator
+        );
+
+        if (result === null) {
+            showError();
+            return;
+        }
+
+        displayValue = String(result);
+        firstOperand = result;
+
+    }
+
+    else {
+        firstOperand = inputValue;
+    }
+
+    operator = nextOperator;
+
+    waitingForSecondOperand = true;
+    justCalculated = false;
+
+    expression =
+        `${formatNumber(firstOperand)} ${operatorSymbols[operator]}`;
+
+    render();
+}
+
+
+// ========================================
+// 8. 결과 계산
+// ========================================
+
+function handleEquals() {
+
+    if (displayValue === "오류") return;
+
+    if (operator === null || waitingForSecondOperand) {
+        return;
+    }
+
+    const secondOperand = Number(displayValue);
+
+    const usedOperator = operator;
+    const leftOperand = firstOperand;
+
+    const result = calculate(
+        leftOperand,
+        secondOperand,
+        usedOperator
+    );
+
+    if (result === null) {
+        showError();
+        return;
+    }
+
+    // 계산식 저장
+    const completedExpression =
+        `${formatNumber(leftOperand)} ${operatorSymbols[usedOperator]} ${formatNumber(secondOperand)} =`;
+
+    // 디스플레이 업데이트
+    expression = completedExpression;
+    displayValue = String(result);
+
+    // 계산 이력 추가
+    addHistory(completedExpression, result);
+
+    firstOperand = null;
+    operator = null;
+
+    waitingForSecondOperand = false;
+    justCalculated = true;
+
+    render();
+}
+
+
+// ========================================
+// 9. 초월함수 기능
+// ========================================
+
+function scientificCalculate(type) {
+
+    if (displayValue === "오류") {
+        clearAll();
+    }
+
+    let value = Number(displayValue);
+    let result;
+
+    const originalValue = value;
+
+    switch (type) {
+
+        // 백분율
+        case "percent":
+
+            result = value / 100;
+
+            expression = `${formatNumber(value)} %`;
+
+            break;
+
+
+        // 제곱근
+        case "sqrt":
+
+            if (value < 0) {
+                showError();
+                return;
+            }
+
+            result = Math.sqrt(value);
+
+            expression = `√(${formatNumber(value)})`;
+
+            break;
+
+
+        // 제곱
+        case "square":
+
+            result = value * value;
+
+            expression = `${formatNumber(value)}²`;
+
+            break;
+
+
+        default:
+            return;
+
+    }
+
+    if (!Number.isFinite(result)) {
+        showError();
+        return;
+    }
+
+    result = Number(result.toPrecision(12));
+
+    displayValue = String(result);
+
+    // 초월함수도 이력에 기록
+    addHistory(expression, result);
+
+    // 대기 중인 연산이 있다면 첫 번째 피연산자 유지
+    if (operator !== null && waitingForSecondOperand) {
+
+        waitingForSecondOperand = true;
+
+    } else {
+
+        firstOperand = null;
+        operator = null;
+        waitingForSecondOperand = false;
+
+    }
+
+    justCalculated = true;
+
+    render();
+}
+
+
+// ========================================
+// 10. 초기화 기능
+// ========================================
+
+function clearAll() {
+
+    displayValue = "0";
+
+    firstOperand = null;
+    operator = null;
+
+    waitingForSecondOperand = false;
+    justCalculated = false;
+
+    expression = "";
+
+    render();
+}
+
+
+function clearEntry() {
+
+    displayValue = "0";
+
+    if (justCalculated) {
+        firstOperand = null;
+        operator = null;
+        expression = "";
+        justCalculated = false;
+    }
+
+    renderExpression();
+}
+
+
+// ========================================
+// 11. 기타 기능
+// ========================================
+
+// 마지막 숫자 삭제
+function backspace() {
+
+    if (waitingForSecondOperand) return;
+
+    if (displayValue === "오류") {
+        clearAll();
+        return;
+    }
+
+    justCalculated = false;
+
+    if (
+        displayValue.length <= 1 ||
+        (displayValue.length === 2 && displayValue.startsWith("-"))
+    ) {
+        displayValue = "0";
+    }
+
+    else {
+        displayValue = displayValue.slice(0, -1);
+    }
+
+    renderExpression();
+}
+
+
+// 부호 변경
+function toggleSign() {
+
+    if (
+        displayValue === "0" ||
+        displayValue === "오류" ||
+        waitingForSecondOperand
+    ) {
+        return;
+    }
+
+    displayValue = displayValue.startsWith("-")
+        ? displayValue.slice(1)
+        : "-" + displayValue;
+
+    justCalculated = false;
+
+    renderExpression();
+}
+
+
+// 오류 처리
+function showError() {
+
+    displayValue = "오류";
+    expression = "계산할 수 없는 값입니다.";
+
+    firstOperand = null;
+    operator = null;
+
+    waitingForSecondOperand = false;
+    justCalculated = true;
+
+    render();
+}
+
+
+// ========================================
+// 12. 계산 이력 관리
+// ========================================
+
+function addHistory(calcExpression, result) {
+
+    calculationHistory.unshift({
+
+        expression: calcExpression,
+
+        result: String(result)
+
+    });
+
+    // 최대 50개까지 저장
+    if (calculationHistory.length > 50) {
+        calculationHistory.pop();
+    }
+
+    renderHistory();
+}
+
+
+// 이력 화면 출력
+function renderHistory() {
+
+    historyList.innerHTML = "";
+
+    if (calculationHistory.length === 0) {
+
+        historyList.innerHTML = `
+            <div class="empty-history">
+                계산 이력이 없습니다.
+            </div>
+        `;
+
+        return;
+    }
+
+    calculationHistory.forEach((item, index) => {
+
+        const historyItem = document.createElement("button");
+
+        historyItem.className = "history-item";
+
+        const expressionElement =
+            document.createElement("div");
+
+        expressionElement.className = "history-expression";
+        expressionElement.textContent = item.expression;
+
+        const resultElement =
+            document.createElement("div");
+
+        resultElement.className = "history-result";
+        resultElement.textContent = formatNumber(item.result);
+
+        historyItem.appendChild(expressionElement);
+        historyItem.appendChild(resultElement);
+
+        // 클릭하면 해당 결과 불러오기
+        historyItem.addEventListener("click", () => {
+
+            loadHistory(index);
+
+        });
+
+        historyList.appendChild(historyItem);
+
+    });
+
+}
+
+
+// 이력 불러오기
+function loadHistory(index) {
+
+    const item = calculationHistory[index];
+
+    if (!item) return;
+
+    displayValue = item.result;
+
+    firstOperand = null;
+    operator = null;
+
+    waitingForSecondOperand = false;
+    justCalculated = true;
+
+    expression = item.expression;
+
+    render();
+
+    // 이력 불러온 뒤 패널 닫기
+    historyPanel.classList.remove("active");
+}
+
+
+// 이력 전체 삭제
+function clearHistory() {
+
+    calculationHistory = [];
+
+    renderHistory();
+}
+
+
+// ========================================
+// 13. 버튼 클릭 이벤트
+// ========================================
+
+document.querySelector(".button-grid")
+.addEventListener("click", function(event) {
+
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    // 숫자
+    if (button.dataset.number !== undefined) {
+
+        inputDigit(button.dataset.number);
+
+    }
+
+    // 사칙연산 및 거듭제곱
+    else if (button.dataset.operator) {
+
+        chooseOperator(button.dataset.operator);
+
+    }
+
+    // 기타 기능
+    else {
+
+        switch (button.dataset.action) {
+
+            case "clear-entry":
+                clearEntry();
+                break;
+
+            case "clear":
+                clearAll();
+                break;
+
+            case "backspace":
+                backspace();
+                break;
+
+            case "sign":
+                toggleSign();
+                break;
+
+            case "decimal":
+                inputDecimal();
+                break;
+
+            case "equals":
+                handleEquals();
+                break;
+
+        }
+
+    }
+
+});
+
+
+// 초월함수 버튼 이벤트
+scientificPanel.addEventListener("click", function(event) {
+
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    if (button.dataset.scientific) {
+
+        scientificCalculate(button.dataset.scientific);
+
+    }
+
+    else if (button.dataset.operator) {
+
+        chooseOperator(button.dataset.operator);
+
+    }
+
+});
+
+
+// ========================================
+// 14. 초월 / 이력 패널 열기
+// ========================================
+
+document.getElementById("scientificToggle")
+.addEventListener("click", function() {
+
+    scientificPanel.classList.toggle("active");
+
+});
+
+
+document.getElementById("historyToggle")
+.addEventListener("click", function() {
+
+    historyPanel.classList.toggle("active");
+
+    renderHistory();
+
+});
+
+
+document.getElementById("clearHistory")
+.addEventListener("click", clearHistory);
+
+
+// ========================================
+// 15. 키보드 입력
+// ========================================
+
+document.addEventListener("keydown", function(event) {
+
+    const key = event.key;
+
+    // 숫자
+    if (/^[0-9]$/.test(key)) {
+
+        inputDigit(key);
+
+    }
+
+    // 기본 사칙연산 및 거듭제곱
+    else if (["+", "-", "*", "/", "^"].includes(key)) {
+
+        chooseOperator(key);
+
+    }
+
+    // 백분율
+    else if (key === "%") {
+
+        scientificCalculate("percent");
+
+    }
+
+    // 제곱근
+    else if (key.toLowerCase() === "r") {
+
+        scientificCalculate("sqrt");
+
+    }
+
+    // 제곱
+    else if (key.toLowerCase() === "s") {
+
+        scientificCalculate("square");
+
+    }
+
+    // 계산
+    else if (key === "Enter" || key === "=") {
+
+        event.preventDefault();
+
+        handleEquals();
+
+    }
+
+    // 삭제
+    else if (key === "Backspace") {
+
+        backspace();
+
+    }
+
+    // 전체 초기화
+    else if (key === "Escape") {
+
+        clearAll();
+
+    }
+
+    // 소수점
+    else if (key === ".") {
+
+        inputDecimal();
+
+    }
+
+});
+
+
+// 최초 화면
+render();
+
+</script>
+
+</body>
+</html>
