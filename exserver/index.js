@@ -1,0 +1,39 @@
+const express = require("express");
+
+//서버 생성
+const app = express();
+
+//포트번호 생성
+const PORT = Number(process.env.PORT) || 3000;
+
+//라우팅
+app.get("/", (req, res) => {
+    res.status(200);
+    res.send("Hello, Node!!");
+});
+
+app.get("/home", (req,res) => {
+    res.status(200);
+    res.send("HOME");
+});
+
+app.get("/about", (req,res) => {
+    res.status(200);
+    res.send("ABOUT");
+});
+
+app.post("/about", (req,res) => {
+    res.status(200);
+    res.send("ABOUT")
+});
+
+app.get("/user/:id", (req,res) => {
+    const userid = req.params.id;
+    res.status(200);
+    res.send(`${userid} 사용자에 대한 정보 요청`);
+});
+
+//서버 실행
+app.listen(PORT, () => {
+    console.log(`${PORT} 포트로 서버 실행`);
+});
