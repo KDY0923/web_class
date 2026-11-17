@@ -28,9 +28,9 @@ app.post("/about", (req,res) => {
 });
 
 app.get("/user/:id", (req,res) => {
-    const userid = req.params.id;
+    const userId = req.params.id;
     res.status(200);
-    res.send(`${userid} 사용자에 대한 정보 요청`);
+    res.send(`${userId} 사용자에 대한 정보 요청`);
 });
 
 //서버 실행
