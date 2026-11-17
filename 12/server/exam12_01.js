@@ -27,9 +27,21 @@ const server = http.createServer((req, res) => {
     console.log("요청 발생");
     console.log(req.method);
 
-    res.setHeader("Content-Type", "text/html");
-    const readStream = fs.createReadStream(__dirname+"/index.html", "utf-8");
-    readStream.pipe(res);
+    // res.setHeader("Content-Type", "text/html");
+    // const readStream = fs.createReadStream(__dirname+"/index.html", "utf-8");
+    // readStream.pipe(res);
+
+    const { method, url } = req;
+    if (method === "GET" && url === "/home") {
+        res.statusCode = 200;
+        res.end("HOME");
+    } else if (method === "GET" && url === "/about") {
+        res.statusCode = 200;
+        res.end("ABOUT");
+    } else {
+        res.statusCode = 404;
+        res.end("NOT FOUND");
+    };
 });
 
 server.listen(PORT, () => {
